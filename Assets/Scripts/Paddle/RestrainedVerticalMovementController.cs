@@ -33,7 +33,7 @@ public class RestrainedVerticalMovementController
     
     private void MoveObject(float yMovementModifier, float timeStep)
     {
-        var yPosition = _movingTransform.localPosition.y + yMovementModifier * Time.deltaTime;
+        var yPosition = _movingTransform.localPosition.y + yMovementModifier * timeStep;
         _movingTransform.localPosition = new Vector3(_startingPosition.x, yPosition, _startingPosition.z);
     }
 }
