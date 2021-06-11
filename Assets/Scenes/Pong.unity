@@ -180,7 +180,7 @@ MonoBehaviour:
   bottom: {fileID: 866062011}
   upKey: 273
   downKey: 274
-  movementSpeed: 300
+  movementSpeed: 400
 --- !u!114 &8471030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -840,7 +840,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballSpeed: 400
-  ballRect: {fileID: 1317533095}
   top: {fileID: 1636126453}
   bottom: {fileID: 1974157978}
   paddleRects:
@@ -1179,7 +1178,7 @@ MonoBehaviour:
   bottom: {fileID: 1755053674}
   upKey: 119
   downKey: 115
-  movementSpeed: 300
+  movementSpeed: 400
 --- !u!114 &1996968997
 MonoBehaviour:
   m_ObjectHideFlags: 0

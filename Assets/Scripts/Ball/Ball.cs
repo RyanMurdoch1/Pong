@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private const float MinDirectionValue = 0.1f, MaxDirectionValue = 1.5f;
+    private const float  MaxYServeValue = 1.5f;
     
     [SerializeField] private float ballSpeed = default;
     [SerializeField] private RectTransform top = default, bottom = default;
@@ -10,8 +11,9 @@ public class Ball : MonoBehaviour
 
     private RectTransform _ballRect;
     private Camera _camera;
-    private float _pixelHeight, _ballYScreenPosition, _screenHeight;
-    private Vector3 _currentDirection = new Vector3(-1, 1, 0);
+    private float _pixelHeight, _screenHeight;
+    private Vector3 _currentDirection, _ballScreenPosition;
+    private readonly WaitForSeconds _waitForSeconds = new WaitForSeconds(1f);
 
     private void Start()
     {
@@ -20,18 +22,43 @@ public class Ball : MonoBehaviour
         _screenHeight = Screen.height;
         _pixelHeight = _camera.WorldToScreenPoint(top.position).y - _camera.WorldToScreenPoint(bottom.position).y;
         _ballRect = GetComponent<RectTransform>();
+        StartCoroutine(ServeBall(Player.PlayerOne));
     }
 
     private void Update()
     {
         UpdateBallPosition();
         CheckForCollisions();
+        CheckForScoring();
+    }
+
+    private void CheckForScoring()
+    {
+        if (_ballScreenPosition.x > Screen.width)
+        {
+            StartCoroutine(ServeBall(Player.PlayerTwo));
+        }
+        else if (_ballScreenPosition.x < 0)
+        {
+            StartCoroutine(ServeBall(Player.PlayerOne));
+        }
+    }
+    
+    private IEnumerator ServeBall(Player playerToServeTo)
+    {
+        _ballRect.transform.localPosition = Vector3.zero;
+        _currentDirection = Vector3.zero;
+        yield return _waitForSeconds;
+        var x = playerToServeTo == Player.PlayerOne ? -1 : 1;
+        var y = Random.Range(-MaxYServeValue, MaxYServeValue);
+        _currentDirection = new Vector3(x, y);
     }
 
     private void UpdateBallPosition()
     {
         var movementModifier = Time.deltaTime * ballSpeed;
         transform.localPosition += _currentDirection * movementModifier;
+        _ballScreenPosition = _camera.WorldToScreenPoint(_ballRect.position);
     }
 
     private void CheckForCollisions()
@@ -40,14 +67,13 @@ public class Ball : MonoBehaviour
         {
             CheckForPaddleCollision(paddleRects[i]);
         }
-        _ballYScreenPosition = _camera.WorldToScreenPoint(_ballRect.position).y;
         CheckForTopCollision();
         CheckForBottomCollision();
     }
 
     private void CheckForTopCollision()
     {
-        if (_ballYScreenPosition + _pixelHeight / 2 > _screenHeight)
+        if (_ballScreenPosition.y + _pixelHeight / 2 > _screenHeight)
         {
             _currentDirection = Vector3.Reflect(_currentDirection.normalized, Vector3.down);
         }
@@ -55,7 +81,7 @@ public class Ball : MonoBehaviour
 
     private void CheckForBottomCollision()
     {
-        if (_ballYScreenPosition - _pixelHeight / 2 < 0)
+        if (_ballScreenPosition.y - _pixelHeight / 2 < 0)
         {
             _currentDirection = Vector3.Reflect(_currentDirection.normalized, Vector3.up);
         }
