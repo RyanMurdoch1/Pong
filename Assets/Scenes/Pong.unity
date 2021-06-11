@@ -842,9 +842,8 @@ MonoBehaviour:
   ballSpeed: 400
   top: {fileID: 1636126453}
   bottom: {fileID: 1974157978}
-  paddleRects:
-  - {fileID: 1996968995}
-  - {fileID: 8471028}
+  playerOnePaddle: {fileID: 1996968995}
+  playerTwoPaddle: {fileID: 8471028}
 --- !u!114 &1317533097
 MonoBehaviour:
   m_ObjectHideFlags: 0
