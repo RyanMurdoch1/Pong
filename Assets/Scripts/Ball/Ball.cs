@@ -97,8 +97,10 @@ public class Ball : MonoBehaviour
     
     private static bool RectOverlaps(RectTransform rectTransformOne, RectTransform rectTransformTwo)
     {
-        var rectOne = new Rect(rectTransformOne.localPosition.x, rectTransformOne.localPosition.y, rectTransformOne.rect.width, rectTransformOne.rect.height);
-        var rectTwo = new Rect(rectTransformTwo.localPosition.x, rectTransformTwo.localPosition.y, rectTransformTwo.rect.width, rectTransformTwo.rect.height);
-        return rectOne.Overlaps(rectTwo);
+        var rectOneHeight = rectTransformOne.rect.height;
+        var rectTwoHeight = rectTransformTwo.rect.height;
+        var rectOne = new Rect(rectTransformOne.localPosition.x, rectTransformOne.localPosition.y - rectOneHeight / 2, rectTransformOne.rect.width, rectOneHeight);
+        var rectTwo = new Rect(rectTransformTwo.localPosition.x, rectTransformTwo.localPosition.y - rectTwoHeight / 2, rectTransformTwo.rect.width, rectTwoHeight);
+        return rectOne.Overlaps(rectTwo, true);
     }
 }
