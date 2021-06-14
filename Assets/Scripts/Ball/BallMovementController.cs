@@ -2,25 +2,24 @@
 
 public class BallMovementController
 {
+    private const float  MaxYServeValue = 1.5f;
+    private const int ServeRightX = 1;
+    private const int ServeLeftX = -1;
+    private readonly float _ballScreenHeight;
+    private readonly Vector2 _screenDimensions;
+    
     private readonly IBall _ball;
-    private readonly Camera _camera;
-    private readonly Vector2 _viewScreenSize;
-    private readonly float _viewScreenHeight;
-    private Vector3 _ballScreenPosition => _camera.WorldToScreenPoint(_ball.RectTransform.position);
 
-
-    public BallMovementController(IBall ball, Transform top, Transform bottom)
+    public BallMovementController(IBall ball)
     {
         _ball = ball;
-        _camera = Camera.main;
-        if (_camera is null) return;
-        _viewScreenSize = new Vector2(Screen.width, Screen.height);
-        _viewScreenHeight = _camera.WorldToScreenPoint(top.position).y - _camera.WorldToScreenPoint(bottom.position).y;
+        _ballScreenHeight = ball.ReturnBallScreenHeight();
+        _screenDimensions = ball.ReturnViewScreenSize();
     }
     
     public void UpdateBallLocalPosition(float timeStep)
     {
-        var movementModifier = timeStep * _ball.MovementSpeed;
+        var movementModifier = timeStep * _ball.ReturnMovementSpeed();
         _ball.RectTransform.localPosition += _ball.CurrentDirection * movementModifier;
     }
     
@@ -35,11 +34,7 @@ public class BallMovementController
             _ball.ScoredPoint(Player.PlayerTwo);
         }
     }
-
-    private bool BallExitedScreenLeft() => _ballScreenPosition.x < 0;
-
-    private bool BallExitedScreenRight() => _ballScreenPosition.x > Screen.width;
-
+    
     public void CheckForWallCollision()
     {
         CheckForTopCollision();
@@ -53,10 +48,27 @@ public class BallMovementController
             _ball.CurrentDirection = (_ball.RectTransform.localPosition - paddleRectTransform.localPosition).normalized;
         }
     }
+
+    public void ResetBallPosition()
+    {
+        _ball.RectTransform.localPosition = Vector3.zero;
+        _ball.CurrentDirection = Vector3.zero;
+    }
     
+    public void ServeTowards(Player playerToServeTo)
+    {
+        var x = playerToServeTo == Player.PlayerOne ? ServeRightX : ServeLeftX;
+        var y = Random.Range(-MaxYServeValue, MaxYServeValue);
+        _ball.CurrentDirection = new Vector3(x, y);
+    }
+    
+    private bool BallExitedScreenLeft() => _ball.BallScreenPosition().x < 0;
+
+    private bool BallExitedScreenRight() => _ball.BallScreenPosition().x > _screenDimensions.x;
+
     private void CheckForTopCollision()
     {
-        if (_ballScreenPosition.y + _viewScreenHeight / 2 > _viewScreenSize.y)
+        if (_ball.BallScreenPosition().y + _ballScreenHeight / 2 > _screenDimensions.y)
         {
             _ball.CurrentDirection = Vector3.Reflect(_ball.CurrentDirection.normalized, Vector3.down);
         }
@@ -64,7 +76,7 @@ public class BallMovementController
 
     private void CheckForBottomCollision()
     {
-        if (_ballScreenPosition.y - _viewScreenHeight / 2 < 0)
+        if (_ball.BallScreenPosition().y - _ballScreenHeight / 2 < 0)
         {
             _ball.CurrentDirection = Vector3.Reflect(_ball.CurrentDirection.normalized, Vector3.up);
         }
