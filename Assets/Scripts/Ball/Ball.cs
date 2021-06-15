@@ -34,12 +34,16 @@ public class Ball : MonoBehaviour, IBall
     private void Update()
     {
         _movementController.UpdateBallLocalPosition(Time.deltaTime);
+    }
+
+    private void FixedUpdate()
+    {
         _movementController.CheckForPaddleCollision(playerOnePaddle);
         _movementController.CheckForPaddleCollision(playerTwoPaddle);
         _movementController.CheckForWallCollision();
         _movementController.CheckForScoring();
     }
-        
+
     public void ScoredPoint(Player scoringPlayer)
     {
         StartCoroutine(ServeBallTo(scoringPlayer));
