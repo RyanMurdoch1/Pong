@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 8471031}
   - component: {fileID: 8471030}
   - component: {fileID: 8471029}
+  - component: {fileID: 8471032}
   m_Layer: 0
   m_Name: Player 2 Paddle
   m_TagString: Untagged
@@ -171,7 +172,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8471027}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 76cc2af7b96e8744fafa0d952d542c8c, type: 3}
   m_Name: 
@@ -219,6 +220,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8471027}
   m_CullTransparentMesh: 0
+--- !u!114 &8471032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8471027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 262749f2657e89f489053bbb29d5d939, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  top: {fileID: 571968330}
+  bottom: {fileID: 866062011}
+  movementSpeed: 250
 --- !u!1 &50681853
 GameObject:
   m_ObjectHideFlags: 0

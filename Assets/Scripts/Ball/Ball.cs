@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Ball : MonoBehaviour, IBall
@@ -6,6 +7,8 @@ public class Ball : MonoBehaviour, IBall
     [SerializeField] private float ballSpeed = default;
     [SerializeField] private RectTransform top = default, bottom = default;
     [SerializeField] private RectTransform playerOnePaddle = default, playerTwoPaddle = default;
+    public delegate void ChangedDirection(Vector3 localPosition, Vector2 newDirection);
+    public static event ChangedDirection DirectionChanged;
 
     public Vector3 CurrentDirection { get; set; }
     public RectTransform RectTransform
@@ -46,7 +49,8 @@ public class Ball : MonoBehaviour, IBall
 
     public void ScoredPoint(Player scoringPlayer)
     {
-        StartCoroutine(ServeBallTo(scoringPlayer));
+        var playerToServe = scoringPlayer == Player.PlayerOne ? Player.PlayerTwo : Player.PlayerOne;
+        StartCoroutine(ServeBallTo(playerToServe));
     }
 
     public float ReturnBallScreenHeight()
@@ -57,6 +61,11 @@ public class Ball : MonoBehaviour, IBall
     public Vector2 ReturnViewScreenSize()
     {
         return new Vector2(Screen.width, Screen.height);
+    }
+
+    public void NewDirection()
+    {
+        DirectionChanged?.Invoke(_ballRect.localPosition, CurrentDirection);
     }
 
     private IEnumerator ServeBallTo(Player playerToServeTo)

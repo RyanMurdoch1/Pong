@@ -46,6 +46,7 @@ public class BallMovementController
         if (Helper.RectOverlaps(_ball.RectTransform, paddleRectTransform))
         {
             _ball.CurrentDirection = (_ball.RectTransform.localPosition - paddleRectTransform.localPosition).normalized;
+            _ball.NewDirection();
         }
     }
 
@@ -57,9 +58,10 @@ public class BallMovementController
     
     public void ServeTowards(Player playerToServeTo)
     {
-        var x = playerToServeTo == Player.PlayerOne ? ServeRightX : ServeLeftX;
+        var x = playerToServeTo == Player.PlayerOne ? ServeLeftX : ServeRightX ;
         var y = Random.Range(-MaxYServeValue, MaxYServeValue);
         _ball.CurrentDirection = new Vector3(x, y);
+        _ball.NewDirection();
     }
     
     private bool BallExitedScreenLeft() => _ball.BallScreenPosition().x < 0;
@@ -71,6 +73,7 @@ public class BallMovementController
         if (_ball.BallScreenPosition().y + _ballScreenHeight / 2 > _screenDimensions.y)
         {
             _ball.CurrentDirection = Vector3.Reflect(_ball.CurrentDirection.normalized, Vector3.down);
+            _ball.NewDirection();
         }
     }
 
@@ -79,6 +82,7 @@ public class BallMovementController
         if (_ball.BallScreenPosition().y - _ballScreenHeight / 2 < 0)
         {
             _ball.CurrentDirection = Vector3.Reflect(_ball.CurrentDirection.normalized, Vector3.up);
+            _ball.NewDirection();
         }
     }
 }

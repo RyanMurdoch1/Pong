@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public interface IBall
 {
@@ -9,4 +10,5 @@ public interface IBall
     void ScoredPoint(Player scoringPlayer);
     float ReturnBallScreenHeight();
     Vector2 ReturnViewScreenSize();
+    void NewDirection();
 }
