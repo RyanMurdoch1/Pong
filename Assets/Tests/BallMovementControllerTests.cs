@@ -19,7 +19,7 @@ public class BallMovementControllerTests
             _ballRect = CreateGameObjectsWithRectTransform();
             _paddleRect = CreateGameObjectsWithRectTransform();
             _substituteBall.RectTransform = _ballRect;
-            _substituteBall.ReturnMovementSpeed().Returns(SubstituteMovementSpeed);
+            _substituteBall.MovementSpeed().Returns(SubstituteMovementSpeed);
             _substituteBall.ReturnBallScreenHeight().Returns(SubstituteBallHeight);
             _substituteBall.ReturnViewScreenSize().Returns(_substituteScreenSize);
             _movementController = new BallMovementController(_substituteBall);

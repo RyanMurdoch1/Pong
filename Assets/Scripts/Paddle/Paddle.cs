@@ -1,27 +1,21 @@
 ﻿using UnityEngine;
 
-public class Paddle : MonoBehaviour, IRestrainedVertical
+public class Paddle : MonoBehaviour, IRestrainedVerticalMovement
 {
     [SerializeField] private Transform top = default, bottom = default;
     [SerializeField] private KeyCode upKey = default, downKey = default;
     [SerializeField] private float movementSpeed = default;
-    public Transform ObjectTransform { get; private set; }
+    public Transform ObjectTransform => transform;
     public float MovementSpeed => movementSpeed;
-    private Camera _camera;
-    private float _paddleScreenYPosition;
     private RestrainedVerticalMovementController _movementController;
 
     private void Start()
     {
-        _camera = Camera.main;
-        if (_camera is null) return;
-        GetStartPosition();
         _movementController = new RestrainedVerticalMovementController(this);
     }
 
     private void Update()
     {
-        _paddleScreenYPosition = _camera.WorldToScreenPoint(ObjectTransform.position).y;
         CheckForPlayerInput();
     }
 
@@ -29,27 +23,15 @@ public class Paddle : MonoBehaviour, IRestrainedVertical
     {
         if (Input.GetKey(upKey))
         {
-            _movementController.AttemptMoveUp(_paddleScreenYPosition, Time.deltaTime);
+            _movementController.AttemptMoveUp(ScreenViewHandler.ReturnScreenYPosition(ObjectTransform.position), Time.deltaTime);
         }
         else if (Input.GetKey(downKey))
         {
-            _movementController.AttemptMoveDown(_paddleScreenYPosition, Time.deltaTime);
+            _movementController.AttemptMoveDown(ScreenViewHandler.ReturnScreenYPosition(ObjectTransform.position), Time.deltaTime);
         }
     }
 
-    public float GetObjectPixelHeight()
-    {
-        return _camera.WorldToScreenPoint(top.position).y - _camera.WorldToScreenPoint(bottom.position).y;
-    }
+    public float GetObjectPixelHeight() => ScreenViewHandler.ReturnScreenDistance(top.position, bottom.position);
 
-    public float GetScreenHeightInPixels()
-    {
-        return Screen.height;
-    }
-
-    public Vector3 GetStartPosition()
-    {
-        ObjectTransform = transform;
-        return ObjectTransform.localPosition;
-    }
+    public float GetScreenHeightInPixels() => ScreenViewHandler.ReturnScreenHeight();
 }

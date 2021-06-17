@@ -1,38 +1,29 @@
 ﻿using System;
 using UnityEngine;
 
-public class NPCPaddle : MonoBehaviour, IRestrainedVertical
+public class NPCPaddle : MonoBehaviour, IRestrainedVerticalMovement
 {
     private const float ReachedTargetTolerance = 0.01f;
     [SerializeField] private RectTransform top = default, bottom = default;
     [SerializeField] private float movementSpeed = default;
-    public Transform ObjectTransform { get; private set; }
-    private Camera _camera;
+    public Transform ObjectTransform => transform;
     private RectTransform _rectTransform;
     private RestrainedVerticalMovementController _movementController;
-    private float _paddleScreenYPosition;
-    private Vector3 _intersection;
     private float _requiredYPosition;
-    private Vector3 _paddleTargetDirection;
 
     private void Start()
     {
-        SetUpPaddle();
+        _movementController = new RestrainedVerticalMovementController(this);
+        _rectTransform = GetComponent<RectTransform>();
+        Ball.DirectionChanged += CheckRequiredPosition;
     }
-    
+
     private void Update()
     {
         if (IsNotAtRequiredPosition())
         {
             MoveToRequiredPosition();
         }
-    }
-    
-    // Don't like this
-    public Vector3 GetStartPosition()
-    {
-        ObjectTransform = transform;
-        return ObjectTransform.localPosition;
     }
 
     private void CheckRequiredPosition(Vector3 ballPosition, Vector2 ballDirection)
@@ -42,35 +33,23 @@ public class NPCPaddle : MonoBehaviour, IRestrainedVertical
 
     private void MoveToRequiredPosition()
     {
-        _paddleScreenYPosition = _camera.WorldToScreenPoint(ObjectTransform.position).y;
-
         if (_rectTransform.localPosition.y < _requiredYPosition)
         {
-            _movementController.AttemptMoveUp(_paddleScreenYPosition, Time.deltaTime);
+            _movementController.AttemptMoveUp(ScreenViewHandler.ReturnScreenYPosition(ObjectTransform.position), Time.deltaTime);
         }
         else if (_rectTransform.localPosition.y > _requiredYPosition)
         {
-            _movementController.AttemptMoveDown(_paddleScreenYPosition, Time.deltaTime);
+            _movementController.AttemptMoveDown(ScreenViewHandler.ReturnScreenYPosition(ObjectTransform.position), Time.deltaTime);
         }
-    }
-    
-    private void SetUpPaddle()
-    {
-        _camera = Camera.main;
-        if (_camera is null) return;
-        GetStartPosition();
-        _movementController = new RestrainedVerticalMovementController(this);
-        _rectTransform = GetComponent<RectTransform>();
-        Ball.DirectionChanged += CheckRequiredPosition;
     }
 
     private void OnDisable() => Ball.DirectionChanged -= CheckRequiredPosition;
 
     private bool IsNotAtRequiredPosition() => Math.Abs(_requiredYPosition - _rectTransform.localPosition.y) > ReachedTargetTolerance;
 
-    float IRestrainedVertical.GetObjectPixelHeight() => _camera.WorldToScreenPoint(top.position).y - _camera.WorldToScreenPoint(bottom.position).y;
+    public float GetObjectPixelHeight() => ScreenViewHandler.ReturnScreenDistance(top.position, bottom.position);
 
-    public float GetScreenHeightInPixels() => Screen.height;
+    public float GetScreenHeightInPixels() => ScreenViewHandler.ReturnScreenHeight();
 
     public float MovementSpeed => movementSpeed;
 }

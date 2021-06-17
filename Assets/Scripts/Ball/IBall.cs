@@ -1,11 +1,10 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public interface IBall
 {
     Vector3 CurrentDirection { get; set; }
     RectTransform RectTransform { get; set; }
-    float ReturnMovementSpeed();
+    float MovementSpeed();
     Vector3 BallScreenPosition();
     void ScoredPoint(Player scoringPlayer);
     float ReturnBallScreenHeight();

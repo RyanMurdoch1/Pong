@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class RestrainedVerticalMovementControllerTests
 {
-    private IRestrainedVertical _movingObject;
+    private IRestrainedVerticalMovement _movingObject;
     private RestrainedVerticalMovementController _movementController;
     private Transform _transform;
     
     [SetUp]
     public void SetUp()
     {
-        _movingObject = Substitute.For<IRestrainedVertical>();
-        _movingObject.GetStartPosition().Returns(Vector3.zero);
+        _movingObject = Substitute.For<IRestrainedVerticalMovement>();
         _movingObject.GetObjectPixelHeight().Returns(2);
         _movingObject.GetScreenHeightInPixels().Returns(10);
         _movingObject.MovementSpeed.Returns(1);

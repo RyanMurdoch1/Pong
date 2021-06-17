@@ -6,13 +6,13 @@ public class RestrainedVerticalMovementController
     private readonly Transform _movingTransform;
     private readonly Vector3 _startingPosition;
 
-    private IRestrainedVertical _movementObject;
+    private readonly IRestrainedVerticalMovement _movementObject;
     
-    public RestrainedVerticalMovementController(IRestrainedVertical movementObject)
+    public RestrainedVerticalMovementController(IRestrainedVerticalMovement movementObject)
     {
         _objectPixelHeight = movementObject.GetObjectPixelHeight();
         _movingTransform = movementObject.ObjectTransform;
-        _startingPosition = movementObject.GetStartPosition();
+        _startingPosition = movementObject.ObjectTransform.localPosition;
         _screenPixelHeight = movementObject.GetScreenHeightInPixels();
         _verticalMovementSpeed = movementObject.MovementSpeed;
         _movementObject = movementObject;

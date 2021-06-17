@@ -19,7 +19,7 @@ public class BallMovementController
     
     public void UpdateBallLocalPosition(float timeStep)
     {
-        var movementModifier = timeStep * _ball.ReturnMovementSpeed();
+        var movementModifier = timeStep * _ball.MovementSpeed();
         _ball.RectTransform.localPosition += _ball.CurrentDirection * movementModifier;
     }
     
@@ -43,11 +43,9 @@ public class BallMovementController
     
     public void CheckForPaddleCollision(RectTransform paddleRectTransform)
     {
-        if (Helper.RectOverlaps(_ball.RectTransform, paddleRectTransform))
-        {
-            _ball.CurrentDirection = (_ball.RectTransform.localPosition - paddleRectTransform.localPosition).normalized;
-            _ball.NewDirection();
-        }
+        if (!Helper.RectOverlaps(_ball.RectTransform, paddleRectTransform)) return;
+        _ball.CurrentDirection = (_ball.RectTransform.localPosition - paddleRectTransform.localPosition).normalized;
+        _ball.NewDirection();
     }
 
     public void ResetBallPosition()
@@ -70,19 +68,25 @@ public class BallMovementController
 
     private void CheckForTopCollision()
     {
-        if (_ball.BallScreenPosition().y + _ballScreenHeight / 2 > _screenDimensions.y)
-        {
-            _ball.CurrentDirection = Vector3.Reflect(_ball.CurrentDirection.normalized, Vector3.down);
-            _ball.NewDirection();
-        }
+        if (!IsMovingUpAndAtScreenTop()) return;
+        _ball.CurrentDirection = Vector3.Reflect(_ball.CurrentDirection.normalized, Vector3.down);
+        _ball.NewDirection();
+    }
+
+    private bool IsMovingUpAndAtScreenTop()
+    {
+        return _ball.BallScreenPosition().y + _ballScreenHeight / 2 >= _screenDimensions.y && _ball.CurrentDirection.y > 0;
     }
 
     private void CheckForBottomCollision()
     {
-        if (_ball.BallScreenPosition().y - _ballScreenHeight / 2 < 0)
-        {
-            _ball.CurrentDirection = Vector3.Reflect(_ball.CurrentDirection.normalized, Vector3.up);
-            _ball.NewDirection();
-        }
+        if (!IsMovingDownAndAtScreenBottom()) return;
+        _ball.CurrentDirection = Vector3.Reflect(_ball.CurrentDirection.normalized, Vector3.up);
+        _ball.NewDirection();
+    }
+
+    private bool IsMovingDownAndAtScreenBottom()
+    {
+        return _ball.BallScreenPosition().y - _ballScreenHeight / 2 <= 0 && _ball.CurrentDirection.y < 0;
     }
 }
