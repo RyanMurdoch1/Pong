@@ -1,19 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
-public class NPCPaddle : MonoBehaviour, IRestrainedVerticalMovement
+public class NonPlayerPaddleInput : MonoBehaviour
 {
+    [SerializeField] private Paddle paddle = default;
     private const float ReachedTargetTolerance = 0.01f;
-    [SerializeField] private RectTransform top = default, bottom = default;
-    [SerializeField] private float movementSpeed = default;
-    public Transform ObjectTransform => transform;
     private RectTransform _rectTransform;
-    private RestrainedVerticalMovementController _movementController;
     private float _requiredYPosition;
-
+    
     private void Start()
     {
-        _movementController = new RestrainedVerticalMovementController(this);
         _rectTransform = GetComponent<RectTransform>();
         Ball.DirectionChanged += CheckRequiredPosition;
     }
@@ -35,21 +31,15 @@ public class NPCPaddle : MonoBehaviour, IRestrainedVerticalMovement
     {
         if (_rectTransform.localPosition.y < _requiredYPosition)
         {
-            _movementController.AttemptMoveUp(ScreenViewHandler.ReturnScreenYPosition(ObjectTransform.position), Time.deltaTime);
+            paddle.AttemptMoveUp();
         }
         else if (_rectTransform.localPosition.y > _requiredYPosition)
         {
-            _movementController.AttemptMoveDown(ScreenViewHandler.ReturnScreenYPosition(ObjectTransform.position), Time.deltaTime);
+            paddle.AttemptMoveDown();
         }
     }
-
-    private void OnDisable() => Ball.DirectionChanged -= CheckRequiredPosition;
-
+    
     private bool IsNotAtRequiredPosition() => Math.Abs(_requiredYPosition - _rectTransform.localPosition.y) > ReachedTargetTolerance;
 
-    public float GetObjectPixelHeight() => ScreenViewHandler.ReturnScreenDistance(top.position, bottom.position);
-
-    public float GetScreenHeightInPixels() => ScreenViewHandler.ReturnScreenHeight();
-
-    public float MovementSpeed => movementSpeed;
+    private void OnDisable() => Ball.DirectionChanged -= CheckRequiredPosition;
 }

@@ -42,6 +42,7 @@ public class Ball : MonoBehaviour, IBall
     public void ScoredPoint(Player scoringPlayer)
     {
         var playerToServe = scoringPlayer == Player.PlayerOne ? Player.PlayerTwo : Player.PlayerOne;
+        // Scoring event
         StartCoroutine(ServeBallTo(playerToServe));
     }
 
