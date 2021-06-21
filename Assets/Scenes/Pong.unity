@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 8471028}
   - component: {fileID: 8471031}
   - component: {fileID: 8471030}
+  - component: {fileID: 8471032}
   - component: {fileID: 8471029}
   m_Layer: 0
   m_Name: Player 2 Paddle
@@ -178,9 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   top: {fileID: 571968330}
   bottom: {fileID: 866062011}
-  upKey: 273
-  downKey: 274
-  movementSpeed: 400
+  movementSpeed: 300
 --- !u!114 &8471030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +218,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8471027}
   m_CullTransparentMesh: 0
+--- !u!114 &8471032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8471027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e528b2c52d56460ca7e615b3340b4b51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paddle: {fileID: 8471029}
 --- !u!1 &50681853
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,6 +799,49 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -40}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &960829081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 960829082}
+  - component: {fileID: 960829083}
+  m_Layer: 0
+  m_Name: Screen View Handler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &960829082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960829081}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &960829083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960829081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7be48b8ee9ec93840a14f63dc463faa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1317533094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,6 +1187,7 @@ GameObject:
   - component: {fileID: 1996968995}
   - component: {fileID: 1996968998}
   - component: {fileID: 1996968997}
+  - component: {fileID: 1996968999}
   - component: {fileID: 1996968996}
   m_Layer: 0
   m_Name: Player 1 Paddle
@@ -1175,8 +1231,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   top: {fileID: 672562154}
   bottom: {fileID: 1755053674}
-  upKey: 119
-  downKey: 115
   movementSpeed: 400
 --- !u!114 &1996968997
 MonoBehaviour:
@@ -1216,3 +1270,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996968994}
   m_CullTransparentMesh: 0
+--- !u!114 &1996968999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996968994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 859fe27428af486187dc90de4cbb5b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paddle: {fileID: 1996968996}
+  upKey: 119
+  downKey: 115

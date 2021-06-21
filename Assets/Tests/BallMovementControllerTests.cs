@@ -19,7 +19,7 @@ public class BallMovementControllerTests
             _ballRect = CreateGameObjectsWithRectTransform();
             _paddleRect = CreateGameObjectsWithRectTransform();
             _substituteBall.RectTransform = _ballRect;
-            _substituteBall.ReturnMovementSpeed().Returns(SubstituteMovementSpeed);
+            _substituteBall.MovementSpeed().Returns(SubstituteMovementSpeed);
             _substituteBall.ReturnBallScreenHeight().Returns(SubstituteBallHeight);
             _substituteBall.ReturnViewScreenSize().Returns(_substituteScreenSize);
             _movementController = new BallMovementController(_substituteBall);
@@ -99,9 +99,29 @@ public class BallMovementControllerTests
         }
         
         [Test]
+        public void Check_Collision_Collide_With_Screen_Top_When_Moving_Down()
+        {
+            _substituteBall.CurrentDirection.Returns(Vector3.down);
+            _substituteBall.BallScreenPosition().Returns(new Vector3(0, _substituteScreenSize.y + 1, 0));
+            _movementController.CheckForWallCollision();
+            Assert.IsFalse(_substituteBall.CurrentDirection == Vector3.up);
+            Assert.IsTrue(_substituteBall.CurrentDirection == Vector3.down);
+        }
+        
+        [Test]
         public void Check_Collision_Collide_With_Screen_Bottom()
         {
             _substituteBall.CurrentDirection.Returns(Vector3.down);
+            _substituteBall.BallScreenPosition().Returns(new Vector3(0, -1, 0));
+            _movementController.CheckForWallCollision();
+            Assert.IsFalse(_substituteBall.CurrentDirection == Vector3.down);
+            Assert.IsTrue(_substituteBall.CurrentDirection == Vector3.up);
+        }
+        
+        [Test]
+        public void Check_Collision_Collide_With_Screen_Bottom_When_Moving_Up()
+        {
+            _substituteBall.CurrentDirection.Returns(Vector3.up);
             _substituteBall.BallScreenPosition().Returns(new Vector3(0, -1, 0));
             _movementController.CheckForWallCollision();
             Assert.IsFalse(_substituteBall.CurrentDirection == Vector3.down);
