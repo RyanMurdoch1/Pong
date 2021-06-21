@@ -43,7 +43,7 @@ public class RestrainedVerticalMovementControllerTests
     }
 
     [Test] 
-    public void Restrain_DownwardMovement()
+    public void Restrain_Downward_Movement()
     {
         _movementController.AttemptMoveDown(0, 1);
         Assert.AreEqual(0, _transform.localPosition.y);

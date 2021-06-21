@@ -179,7 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   top: {fileID: 571968330}
   bottom: {fileID: 866062011}
-  movementSpeed: 200
+  movementSpeed: 300
 --- !u!114 &8471030
 MonoBehaviour:
   m_ObjectHideFlags: 0

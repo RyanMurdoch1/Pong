@@ -1,5 +1,4 @@
-﻿
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using UnityEngine;
 
 public class HelperTests
@@ -33,4 +32,59 @@ public class HelperTests
         _rectTwo.localPosition = new Vector3(1000, 0, 0);
         Assert.IsFalse(Helper.RectOverlaps(_rectOne, _rectTwo));
     }
+
+    [Test]
+    public void GetRequiredYPosition_Objects_Are_Level_With_Upwards_Direction_Returns_One()
+    {
+        var objectPosition = new Vector3(1, 0);
+        var targetPosition = new Vector3(0, 0);
+        var targetDirection = new Vector2(1, 1);
+        Assert.AreEqual(1f, Helper.GetRequiredYPosition(objectPosition, targetPosition, targetDirection), double.Epsilon);
+    }
+    
+    [Test]
+    public void GetRequiredYPosition_Objects_Are_Level_With_Downwards_Direction_Returns_Negative_One()
+    {
+        var objectPosition = new Vector3(1, 0);
+        var targetPosition = new Vector3(0, 0);
+        var targetDirection = new Vector2(1, -1);
+        Assert.AreEqual(-1f, Helper.GetRequiredYPosition(objectPosition, targetPosition, targetDirection), double.Epsilon);
+    }
+    
+    [Test]
+    public void GetRequiredYPosition_Objects_Are_Level_With_Forwards_Direction_Returns_Zero()
+    {
+        var objectPosition = new Vector3(1, 0);
+        var targetPosition = new Vector3(0, 0);
+        var targetDirection = new Vector2(1, 0);
+        Assert.AreEqual(0f, Helper.GetRequiredYPosition(objectPosition, targetPosition, targetDirection), double.Epsilon);
+    }
+    
+    [Test]
+    public void GetRequiredYPosition_Target_Is_Above_With_Forwards_Direction_Returns_One()
+    {
+        var objectPosition = new Vector3(1, 0);
+        var targetPosition = new Vector3(0, 1);
+        var targetDirection = new Vector2(1, 0);
+        Assert.AreEqual(1f, Helper.GetRequiredYPosition(objectPosition, targetPosition, targetDirection), double.Epsilon);
+    }
+    
+    [Test]
+    public void GetRequiredYPosition_Target_Is_Below_With_Forwards_Direction_Returns_Negative_One()
+    {
+        var objectPosition = new Vector3(1, 0);
+        var targetPosition = new Vector3(0, -1);
+        var targetDirection = new Vector2(1, 0);
+        Assert.AreEqual(-1f, Helper.GetRequiredYPosition(objectPosition, targetPosition, targetDirection), double.Epsilon);
+    }
+    
+    [Test]
+    public void GetRequiredYPosition_Target_Is_Moving_Away_From_Object_Returns_Zero()
+    {
+        var objectPosition = new Vector3(1, 0);
+        var targetPosition = new Vector3(0, -1);
+        var targetDirection = new Vector2(-1, 0);
+        Assert.AreEqual(0f, Helper.GetRequiredYPosition(objectPosition, targetPosition, targetDirection), double.Epsilon);
+    }
 }
+
